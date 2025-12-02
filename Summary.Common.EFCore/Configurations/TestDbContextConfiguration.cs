@@ -2,16 +2,16 @@
 
 namespace Summary.Common.EFCore.Configurations
 {
-    public class TestDbContextConfiguration : ITestDbContextConfiguration
+    public class TestDbContextConfiguration : IDbContextConfiguration
     {
         public string ConnectionString { get; set; } = string.Empty;
         public int DbType { get; set; }
         public string DbContextFullName { get; set; } = string.Empty;
     }
 
-    public class TestMultipleDbContextConfiguration : ITestMultipleDbContextConfiguration
+    public class TestMultipleDbContextConfiguration : IMultipleDbContextConfiguration
     {
-        public IEnumerable<ITestDbContextConfiguration> TestDbContextConfigurations { get; set; }
+        public IEnumerable<IDbContextConfiguration> TestDbContextConfigurations { get; set; }
             = new List<TestDbContextConfiguration>();
     }
 }

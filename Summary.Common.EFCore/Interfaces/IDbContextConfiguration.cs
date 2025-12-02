@@ -1,6 +1,6 @@
 ﻿namespace Summary.Common.EFCore.Interfaces
 {
-    public interface ITestDbContextConfiguration
+    public interface IDbContextConfiguration
     {
         string ConnectionString { get; set; }
 
@@ -12,8 +12,8 @@
         string DbContextFullName { get; set; }
     }
 
-    public interface ITestMultipleDbContextConfiguration
+    public interface IMultipleDbContextConfiguration
     {
-        public IEnumerable<ITestDbContextConfiguration> TestDbContextConfigurations { get; }
+        public IEnumerable<IDbContextConfiguration> TestDbContextConfigurations { get; }
     }
 }

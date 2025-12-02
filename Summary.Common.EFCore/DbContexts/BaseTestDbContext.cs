@@ -202,7 +202,7 @@ namespace Summary.Common.EFCore.DbContexts
 
         private List<EFCoreEntityChangeInfo> ProcessTrackedEntries()
         {
-            var changeInfos = new List<EFCoreEntityChangeInfo>(); // 局部变量
+            var changeInfos = new List<EFCoreEntityChangeInfo>();
             var now = DateTime.UtcNow;
 
             SetTenantIdOnNewEntities();
@@ -220,7 +220,6 @@ namespace Summary.Common.EFCore.DbContexts
 
                 ConceptEntry(entry, now);
 
-                // 获取变更信息并添加到列表
                 var info = CreateChangeInfo(entry);
                 if (info != null)
                 {
