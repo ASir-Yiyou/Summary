@@ -10,7 +10,7 @@ namespace Summary.Common.EFCore.DbContexts
     public class MyTestDbContext : BaseTestDbContext<Guid, string>
     {
         public MyTestDbContext(DbContextOptions dbContextOptions,
-            ITestSession<Guid, string> session) : base(dbContextOptions, session)
+            IDbSession<Guid, string> session) : base(dbContextOptions, session)
         {
         }
 

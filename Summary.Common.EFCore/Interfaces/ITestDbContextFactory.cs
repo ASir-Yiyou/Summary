@@ -15,10 +15,10 @@ namespace Summary.Common.EFCore.Interfaces
     public class MyTestDbContextFactory : ITestDbContextFactory
     {
         private readonly IConfiguration _configuration;
-        private readonly ITestSession<Guid, string> _session;
+        private readonly IDbSession<Guid, string> _session;
         private const string ConfigurationSectionName = "TestMultipleDbContextConfiguration";
 
-        public MyTestDbContextFactory(IConfiguration configuration, ITestSession<Guid, string> session)
+        public MyTestDbContextFactory(IConfiguration configuration, IDbSession<Guid, string> session)
         {
             _configuration = configuration;
             _session = session;

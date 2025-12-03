@@ -12,17 +12,17 @@ namespace Summary.Common.EFCore.DbContexts
 {
     public abstract class BaseTestDbContext<TUserId, KTenantId> : DbContext where TUserId : notnull
     {
-        public ITestSession<TUserId, KTenantId> TestSession { get; }
+        public IDbSession<TUserId, KTenantId> DbSession { get; }
 
         //private static readonly ConcurrentDictionary<Type, Action<object, TUserId>?> UserIdSetters = new();
         //private static readonly ConcurrentDictionary<Type, Action<object, DateTime>?> DateTimeSetters = new();
         private static readonly MethodInfo ConfigureGlobalFiltersMethodInfo =
             typeof(BaseTestDbContext<TUserId, KTenantId>).GetMethod(nameof(ConfigureGlobalFilters), BindingFlags.Instance | BindingFlags.NonPublic)!;
 
-        protected BaseTestDbContext(DbContextOptions dbContextOptions, ITestSession<TUserId, KTenantId> session)
+        protected BaseTestDbContext(DbContextOptions dbContextOptions, IDbSession<TUserId, KTenantId> session)
             : base(dbContextOptions)
         {
-            TestSession = session;
+            DbSession = session;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -78,8 +78,8 @@ namespace Summary.Common.EFCore.DbContexts
 
             if (typeof(IHaveTenant<>).MakeGenericType(typeof(KTenantId)).IsAssignableFrom(entityType))
             {
-                var sessionProperty = Expression.Property(Expression.Constant(this), nameof(this.TestSession));
-                var sessionTenantId = Expression.Property(sessionProperty, nameof(this.TestSession.TenantId));
+                var sessionProperty = Expression.Property(Expression.Constant(this), nameof(this.DbSession));
+                var sessionTenantId = Expression.Property(sessionProperty, nameof(this.DbSession.TenantId));
                 var entityTenantIdProperty = Expression.Property(parameter, nameof(IHaveTenant<KTenantId>.TenantId));
                 var tenantFilter = Expression.Equal(entityTenantIdProperty, Expression.Convert(sessionTenantId, entityTenantIdProperty.Type));
 
@@ -255,7 +255,7 @@ namespace Summary.Common.EFCore.DbContexts
         private void SetUserIdProperty(object entity, string propertyName, bool onlySetIfDefault = false)
         {
             var propertyInfo = entity.GetType().GetProperty(propertyName);
-            if (propertyInfo == null || TestSession == null) return;
+            if (propertyInfo == null || DbSession == null) return;
 
             if (onlySetIfDefault)
             {
@@ -276,14 +276,14 @@ namespace Summary.Common.EFCore.DbContexts
 
             if (propertyInfo.PropertyType.IsAssignableFrom(typeof(TUserId)))
             {
-                propertyInfo.SetValue(entity, TestSession.UserId);
+                propertyInfo.SetValue(entity, DbSession.UserId);
             }
             else
             {
                 try
                 {
                     var targetType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-                    var convertedValue = Convert.ChangeType(TestSession.UserId, targetType);
+                    var convertedValue = Convert.ChangeType(DbSession.UserId, targetType);
                     propertyInfo.SetValue(entity, convertedValue);
                 }
                 catch (Exception) { }
@@ -345,7 +345,7 @@ namespace Summary.Common.EFCore.DbContexts
         {
             foreach (var entry in ChangeTracker.Entries<IHaveTenant<KTenantId>>().Where(e => e.State == EntityState.Added))
             {
-                entry.Entity.TenantId = TestSession.TenantId;
+                entry.Entity.TenantId = DbSession.TenantId;
             }
         }
 

@@ -11,10 +11,10 @@ namespace Summary.Common.EFCore.DbContexts
 {
     public class AppDbContext : BaseTestDbContext<Guid, Guid>
     {
-        private readonly ITestSession<Guid, Guid> _currentUser;
+        private readonly IDbSession<Guid, Guid> _currentUser;
 
         public AppDbContext(DbContextOptions dbContextOptions,
-            ITestSession<Guid, Guid> session) : base(dbContextOptions, session)
+            IDbSession<Guid, Guid> session) : base(dbContextOptions, session)
         {
             _currentUser = session;
         }
@@ -27,6 +27,8 @@ namespace Summary.Common.EFCore.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.UseOpenIddict();
 
             modelBuilder.Entity<Group>()
                 .HasOne(g => g.Parent)
@@ -103,7 +105,7 @@ namespace Summary.Common.EFCore.DbContexts
                     throw new NotSupportedException($"不支持的数据库类型 ID: {dbConfig.DbType}");
             }
 
-            ITestSession<Guid, Guid> session = new AppTestSession();
+            IDbSession<Guid, Guid> session = new AppTestSession();
             return new AppDbContext(optionsBuilder.Options, session);
         }
 
