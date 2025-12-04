@@ -8,7 +8,6 @@ namespace WebService.Extensions
     {
         public static IServiceCollection AddOpenIddictService(this IServiceCollection services)
         {
-
             services.AddOpenIddict()
                 .AddCore(options =>
                 {

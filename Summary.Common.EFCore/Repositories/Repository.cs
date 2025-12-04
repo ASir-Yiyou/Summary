@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Summary.Common.EFCore.Interfaces;
-using System.Linq.Expressions;
 
 namespace Summary.Common.EFCore.Repositories
 {

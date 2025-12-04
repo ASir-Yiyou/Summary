@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Summary.Common.EFCore.Configurations;
 using Summary.Common.EFCore.Diagnostic;
-using Summary.Common.EFCore.Interfaces;
 using Summary.Domain.Entities;
 using Summary.Domain.Interfaces;
 

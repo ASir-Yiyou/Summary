@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Summary.Common.Redis.Interfaces;
 
 namespace Summary.Common.Redis.Impls
@@ -43,7 +40,6 @@ namespace Summary.Common.Redis.Impls
                 return;
             }
             _globalConfig?.Invoke(target);
-
         }
     }
 

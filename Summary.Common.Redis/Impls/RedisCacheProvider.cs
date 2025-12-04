@@ -71,5 +71,4 @@ namespace Summary.Common.Redis.Impls
             }
         }
     }
-
 }

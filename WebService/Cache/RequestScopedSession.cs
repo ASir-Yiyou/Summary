@@ -6,6 +6,7 @@ namespace WebService.Cache
     {
         // 默认值为空
         public Guid UserId { get; private set; } = Guid.Empty;
+
         public Guid TenantId { get; private set; } = Guid.Empty;
 
         public bool IsInitialized { get; private set; } = false;

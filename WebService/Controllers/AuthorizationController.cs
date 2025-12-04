@@ -44,7 +44,6 @@ namespace WebService.Controllers
             if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
                 return BadRequest("Username and password are required.");
 
-            
             var exists = await _context.Users
                 .IgnoreQueryFilters()// 因为注册是匿名操作，此时 Session.TenantId 为空，如果不忽略过滤器，会因为 TenantId 不匹配而查不到已存在的用户，导致重名注册。
                 .AnyAsync(u => u.Username == request.Username);
@@ -58,7 +57,7 @@ namespace WebService.Controllers
                 Id = Guid.NewGuid(),
                 Username = request.Username,
                 Email = request.Email,
-                TenantId = request.TenantId == Guid.Empty ? request.TenantId: Guid.NewGuid(),
+                TenantId = request.TenantId == Guid.Empty ? request.TenantId : Guid.NewGuid(),
                 MainGroupId = request.GroupId,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
@@ -130,7 +129,6 @@ namespace WebService.Controllers
 
                 return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
-
             else if (request.IsClientCredentialsGrantType())
             {
                 var identity = new ClaimsIdentity(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
@@ -166,7 +164,6 @@ namespace WebService.Controllers
             user.SecurityStamp = Guid.NewGuid().ToString();
             await _context.SaveChangesAsync();
 
-
             return Ok(new { Message = "Password changed successfully." });
         }
 
@@ -183,6 +180,5 @@ namespace WebService.Controllers
                     [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The username/password is invalid."
                 }));
         }
-
     }
- }
+}

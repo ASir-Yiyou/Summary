@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Summary.Common.Redis.Interfaces;
 
 namespace Summary.Common.Redis.Impls
 {
     public class RedisCacheConfiguration : ICacheConfiguration
     {
-
         public RedisCacheConfiguration(string cacheName, [NotNull] Action<IRedisCacheOption> action)
         {
             CacheName = cacheName;

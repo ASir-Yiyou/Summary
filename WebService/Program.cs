@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Summary.Common.EFCore.Extensions;
 using Summary.Common.Redis.Extensions;
 using Summary.Domain.Entities;

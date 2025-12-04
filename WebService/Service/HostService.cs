@@ -39,16 +39,15 @@ namespace WebService.Service
                     ClientSecret = configuration["ApiKey"],
                     DisplayName = "My Console App",
                     Permissions ={
-                        OpenIddictConstants.Permissions.Endpoints.Token, 
+                        OpenIddictConstants.Permissions.Endpoints.Token,
                         OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
-                        OpenIddictConstants.Permissions.GrantTypes.Password, 
+                        OpenIddictConstants.Permissions.GrantTypes.Password,
                         OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
                         OpenIddictConstants.Permissions.Prefixes.Scope + "api",
                         OpenIddictConstants.Permissions.Prefixes.Scope + "openid",
                         OpenIddictConstants.Permissions.Prefixes.Scope + "profile",
-                        OpenIddictConstants.Permissions.Prefixes.Scope + "offline_access" 
+                        OpenIddictConstants.Permissions.Prefixes.Scope + "offline_access"
                     }
-
                 }, cancellationToken);
             }
 
@@ -121,7 +120,6 @@ namespace WebService.Service
                     MainGroupId = rootGroup.Id,
                     SecurityStamp = Guid.NewGuid().ToString()
                 };
-
 
                 adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "123456");
 

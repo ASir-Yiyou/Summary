@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Newtonsoft.Json.Linq;
 using Summary.Common.EFCore.Diagnostic;
 using Summary.Common.Extensions;
 using Summary.Domain.Interfaces;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Summary.Common.EFCore.DbContexts
 {
@@ -101,6 +101,7 @@ namespace Summary.Common.EFCore.DbContexts
                 case EntityState.Modified:
                     CreateChangeInfo(entityEntry);
                     break;
+
                 case EntityState.Deleted:
                     CreateChangeInfo(entityEntry);
                     break;
@@ -128,7 +129,8 @@ namespace Summary.Common.EFCore.DbContexts
             return ChangeInfo;
         }
 
-        protected virtual void HandleChangeInfos(IList<EFCoreEntityChangeInfo> changeInfos) { }
+        protected virtual void HandleChangeInfos(IList<EFCoreEntityChangeInfo> changeInfos)
+        { }
 
         protected virtual Task HandleChangeInfosAsync(IList<EFCoreEntityChangeInfo> changeInfos, CancellationToken cancellationToken)
         {

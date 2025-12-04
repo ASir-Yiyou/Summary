@@ -42,7 +42,6 @@ namespace Summary.Common.Core.Extensions
             return webHostBuilder;
         }
 
-
         public static IWebHostBuilder UseKestrelListenAnyIP(this IWebHostBuilder webHostBuilder, IConfiguration configuration, Action<ListenOptions>? configure = null)
         {
             webHostBuilder.UseKestrel(kestrel =>
@@ -73,6 +72,5 @@ namespace Summary.Common.Core.Extensions
 
             return webHostBuilder;
         }
-
     }
 }

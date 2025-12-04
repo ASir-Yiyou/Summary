@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using OpenIddict.Abstractions;
 using Summary.Common.EFCore.DbContexts;
 using Summary.Common.Model;
@@ -20,7 +18,7 @@ namespace WebService.Service
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, IDbSession<Guid, Guid> session, IRedisCacheProvider cacheProvider,AppDbContext dbContext)
+        public async Task InvokeAsync(HttpContext context, IDbSession<Guid, Guid> session, IRedisCacheProvider cacheProvider, AppDbContext dbContext)
         {
             if (context.User.Identity?.IsAuthenticated == true)
             {
@@ -36,10 +34,8 @@ namespace WebService.Service
 
                     try
                     {
-
                         sessionData = await cache.GetAsync<UserSessionCache?>(cacheKey, async (key) =>
                         {
-
                             var user = await dbContext.Users
                                 .AsNoTracking()
                                 .IgnoreQueryFilters()
@@ -54,7 +50,7 @@ namespace WebService.Service
                             };
                         });
                     }
-                    catch (Exception){ }
+                    catch (Exception) { }
 
                     if (sessionData != null)
                     {

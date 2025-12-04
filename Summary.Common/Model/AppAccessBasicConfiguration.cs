@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Summary.Common.Model
 {
     public class AppAccessBasicConfiguration
     {
         private string? _appAccessDomain;
+
         public AppAccessBasicConfiguration()
         {
             Root = AppDomain.CurrentDomain.BaseDirectory;

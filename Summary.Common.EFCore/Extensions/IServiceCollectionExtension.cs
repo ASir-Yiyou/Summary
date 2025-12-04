@@ -52,6 +52,5 @@ namespace Summary.Common.EFCore.Extensions
 
             return services;
         }
-
     }
 }

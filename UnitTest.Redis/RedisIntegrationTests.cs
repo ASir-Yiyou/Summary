@@ -1,6 +1,6 @@
-﻿using Summary.Common.Redis.Extensions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Summary.Common.Redis.Extensions;
 using Summary.Common.Redis.Interfaces;
 
 namespace UnitTest.Redis

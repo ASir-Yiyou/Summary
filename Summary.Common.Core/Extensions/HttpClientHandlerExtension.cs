@@ -20,7 +20,6 @@ namespace Summary.Common.Core.Extensions
                 handler.UseCookies = false;
                 handler.AllowAutoRedirect = false;
 
-
                 //if (configOptions.SkipSslValidation)
                 //{
                 //    handler.ServerCertificateCustomValidationCallback =

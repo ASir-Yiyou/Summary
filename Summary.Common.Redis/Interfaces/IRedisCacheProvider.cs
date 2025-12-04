@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Summary.Common.Redis.Interfaces
+﻿namespace Summary.Common.Redis.Interfaces
 {
     public interface IRedisCacheProvider
     {

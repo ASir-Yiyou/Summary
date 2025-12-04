@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Summary.Domain.Enums
+﻿namespace Summary.Domain.Enums
 {
     public enum DataScope
     {

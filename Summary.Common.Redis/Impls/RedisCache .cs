@@ -208,7 +208,7 @@ namespace Summary.Common.Redis.Impls
             if (string.IsNullOrEmpty(Name))
             {
                 // 如果没有名字，认为是清空整个 DB（危险操作，视情况保留或移除）
-                // await _db.ExecuteAsync("FLUSHDB"); 
+                // await _db.ExecuteAsync("FLUSHDB");
                 return;
             }
 
@@ -234,7 +234,8 @@ namespace Summary.Common.Redis.Impls
             }
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        { }
 
         // --- 辅助方法保持不变 ---
         private TimeSpan? CalculateExpiry(TimeSpan? sliding, DateTimeOffset? absolute)
@@ -246,6 +247,7 @@ namespace Summary.Common.Redis.Impls
         }
 
         private string Serialize<T>(T value) => JsonSerializer.Serialize(value);
+
         private T? Deserialize<T>(RedisValue value) => value.HasValue ? JsonSerializer.Deserialize<T>(value.ToString()) : default;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Summary.Domain.Interfaces;
 
 namespace Summary.Domain.Entities
@@ -13,6 +12,7 @@ namespace Summary.Domain.Entities
 
         // 树形结构
         public Guid? ParentId { get; set; }
+
         public Group? Parent { get; set; }
         public ICollection<Group> Children { get; set; } = [];
     }

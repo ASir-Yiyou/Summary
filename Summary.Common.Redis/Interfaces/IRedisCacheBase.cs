@@ -37,7 +37,5 @@ namespace Summary.Common.Redis.Interfaces
 
     public interface IRedisCache : IRedisCacheBase, IRedisCacheOption, IDisposable
     {
-
     }
-
 }

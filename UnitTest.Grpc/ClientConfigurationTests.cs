@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Shared.Contracts.Test;
 using Microsoft.Extensions.DependencyInjection;
 using Summary.Common.Core.Extensions;
@@ -12,10 +8,10 @@ namespace UnitTest.Grpc
 {
     public class ClientConfigurationTests
     {
-        ServiceProvider _provider;
+        private ServiceProvider _provider;
+
         public ClientConfigurationTests()
         {
-            
             var services = new ServiceCollection();
 
             // 2. [虚拟配置]：在内存中模拟 appsettings.json
@@ -34,7 +30,6 @@ namespace UnitTest.Grpc
 
             _provider = services.BuildServiceProvider();
         }
-
 
         [Fact]
         public async Task GetStatus_Should_Return_Running()
@@ -73,7 +68,6 @@ namespace UnitTest.Grpc
         [Fact]
         public async Task UploadLogs_Should_Return_Success()
         {
-
             var _client = _provider.GetRequiredService<DeviceControl.DeviceControlClient>();
             using var call = _client.UploadLogs();
 
@@ -94,7 +88,6 @@ namespace UnitTest.Grpc
         [Fact]
         public async Task LiveConsole_Should_Ping_Pong()
         {
-
             var _client = _provider.GetRequiredService<DeviceControl.DeviceControlClient>();
             using var call = _client.LiveConsole();
 

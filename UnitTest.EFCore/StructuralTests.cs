@@ -11,13 +11,16 @@ namespace UnitTest.EFCore
     public class Ticket
     {
         public int Id { get; set; }
-        public required string Subject { get; set; }
-        public StatusOption Status { get; set; } =new StatusOption { Status = "Unknown", CustomStatus = null };
+        public string Subject { get; set; }
+        public StatusOption Status { get; set; } = new StatusOption { Status = "Unknown", CustomStatus = null };
         public DateTime CreatedOn { get; set; }
     }
+
     public class TestDbContext : DbContext
     {
-        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+        {
+        }
 
         public DbSet<Ticket> Tickets { get; set; }
 
@@ -33,6 +36,7 @@ namespace UnitTest.EFCore
             });
         }
     }
+
     public class StructuralTests
     {
         private TestDbContext CreateContext()
