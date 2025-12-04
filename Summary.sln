@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc.Test.Service", "Grpc.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.Grpc", "UnitTest.Grpc\UnitTest.Grpc.csproj", "{2D201043-970F-44D3-9DE6-5E6B58960DCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{970C54AB-0413-630A-A205-8865AEAEAA88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationServer", "WebService\AuthenticationServer.csproj", "{970C54AB-0413-630A-A205-8865AEAEAA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

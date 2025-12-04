@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Summary.Common.Redis\Summary.Common.Redis.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interface\" />
+  </ItemGroup>
+
 </Project>

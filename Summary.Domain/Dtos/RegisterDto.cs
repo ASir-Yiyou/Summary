@@ -11,6 +11,12 @@ namespace Summary.Domain.Dtos
         public Guid GroupId { get; set; }  // 注册时指定部门
     }
 
+    public class LoginDto
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
     public class ChangePasswordDto
     {
         public string OldPassword { get; set; } = string.Empty;

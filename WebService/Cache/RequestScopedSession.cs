@@ -1,6 +1,6 @@
 ﻿using Summary.Domain.Interfaces;
 
-namespace WebService.Cache
+namespace AuthenticationServer.Cache
 {
     public class RequestScopedSession : IDbSession<Guid, Guid>
     {

@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
+using AuthenticationServer.Cache;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
 using Summary.Common.EFCore.DbContexts;
 using Summary.Common.Model;
 using Summary.Common.Redis.Interfaces;
 using Summary.Domain.Interfaces;
-using WebService.Cache;
 
-namespace WebService.Service
+namespace AuthenticationServer.Service
 {
     public class RedisSessionMiddleware
     {
@@ -18,7 +18,7 @@ namespace WebService.Service
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, IDbSession<Guid, Guid> session, IRedisCacheProvider cacheProvider, AppDbContext dbContext)
+        public async Task InvokeAsync(HttpContext context, IDbSession<Guid, Guid> session, IRedisCacheProvider cacheProvider, AppDbContext dbContext, IOpenIddictAuthorizationManager authManager)
         {
             if (context.User.Identity?.IsAuthenticated == true)
             {
@@ -34,8 +34,22 @@ namespace WebService.Service
 
                     try
                     {
-                        sessionData = await cache.GetAsync<UserSessionCache?>(cacheKey, async (key) =>
+                        sessionData = await cache.GetAsync(cacheKey, async (key) =>
                         {
+                            // --- 降级逻辑：Redis 无数据 ---
+
+                            var authId = context.User.FindFirst(OpenIddictConstants.Claims.Private.AuthorizationId)?.Value;
+
+                            if (!string.IsNullOrEmpty(authId))
+                            {
+                                var authorization = await authManager.FindByIdAsync(authId);
+
+                                if (authorization == null || !await authManager.HasStatusAsync(authorization, OpenIddictConstants.Statuses.Valid))
+                                {
+                                    return null;
+                                }
+                            }
+
                             var user = await dbContext.Users
                                 .AsNoTracking()
                                 .IgnoreQueryFilters()
@@ -46,17 +60,28 @@ namespace WebService.Service
                             return new UserSessionCache
                             {
                                 UserId = user.Id,
-                                TenantId = user.TenantId
+                                TenantId = user.TenantId,
+                                // 加载角色...
                             };
                         });
                     }
-                    catch (Exception) { }
+                    catch (Exception) { /* Log Error */ }
 
                     if (sessionData != null)
                     {
                         if (session is RequestScopedSession requestSession)
                         {
                             requestSession.Initialize(sessionData.UserId, sessionData.TenantId);
+                        }
+
+                        if (sessionData.Roles != null && sessionData.Roles.Any())
+                        {
+                            var appIdentity = new ClaimsIdentity();
+                            foreach (var role in sessionData.Roles)
+                            {
+                                appIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                            }
+                            context.User.AddIdentity(appIdentity);
                         }
                     }
                     else
