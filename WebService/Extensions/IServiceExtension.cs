@@ -61,6 +61,8 @@ namespace AuthenticationServer.Extensions
                     // 允许机器模式
                     options.AllowClientCredentialsFlow();
                     // 允许密码模式 (给测试用)
+                    // 密钥分享给其他程序
+                    options.DisableAccessTokenEncryption();
 #if DEBUG
                     options.AllowPasswordFlow();
 #endif

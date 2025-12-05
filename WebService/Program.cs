@@ -16,6 +16,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddHealthChecks();//注册健康检查服务
+
 builder.Services.AddRedis(builder.Configuration, "RedisConfig", policy =>
 {
     policy.Configure("User", opt => opt.DefaultSlidingExpireTime = TimeSpan.FromHours(2));
@@ -38,6 +40,12 @@ builder.Services.AddHostedService<HostService>();
 
 builder.Services.AddHostedService<MyBackgroundService>();
 
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true; // 可选：查询参数也小写
+});
+
 var app = builder.Build();
 
 app.UseRouting();
@@ -59,6 +67,8 @@ if (app.Environment.IsDevelopment())
         options.OAuthUsePkce();
     });
 }
+
+app.MapHealthChecks("/health");//映射健康检查接口
 
 app.MapControllers();
 

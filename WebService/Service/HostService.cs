@@ -65,7 +65,7 @@ public class HostService : IHostedService
             ClientType = OpenIddictConstants.ClientTypes.Public, // Public 类型不需要 Secret (模拟手机/网页前端)
             DisplayName = "Swagger UI Test",
 
-            // 如果用 Password 模式，其实不需要 RedirectUri，但为了扩展性可以加上
+            // 如果用 Password 模式，其实不需要 RedirectUri
 #if DEBUG
             RedirectUris = { new Uri("https://localhost:7072/swagger/oauth2-redirect.html") },
 #else
