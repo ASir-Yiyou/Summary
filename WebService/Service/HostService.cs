@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Medallion.Threading;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
 using Summary.Common.EFCore.DbContexts;
@@ -9,29 +10,39 @@ using Summary.Domain.Interfaces;
 public class HostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IDistributedLockProvider _lockProvider;
 
-    public HostService(IServiceProvider serviceProvider)
+    public HostService(IServiceProvider serviceProvider, IDistributedLockProvider lockProvider)
     {
         _serviceProvider = serviceProvider;
+        _lockProvider = lockProvider;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        // 1. 获取全局锁
+        // "AppDbMigrationLock" 是自定义的锁名称，所有副本必须一致
+        await using (var handle = await _lockProvider.AcquireLockAsync("AppDbMigrationLock", cancellationToken: cancellationToken))
+        {
 
-        var options = scope.ServiceProvider.GetRequiredService<DbContextOptions<AppDbContext>>();
-        var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
-        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
+            using var scope = _serviceProvider.CreateScope();
 
-        var adminSession = new AppTestSession();
-        using var context = new AppDbContext(options, adminSession);
+            var options = scope.ServiceProvider.GetRequiredService<DbContextOptions<AppDbContext>>();
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
+            var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
 
-        await context.Database.EnsureCreatedAsync(cancellationToken);
+            var adminSession = new AppTestSession();
+            using var context = new AppDbContext(options, adminSession);
 
-        await SeedOpenIddictClientsAsync(manager, configuration, cancellationToken);
+            // 只有第一个获得锁的进程会真正执行创建，
+            // 后续获得锁的进程进来后，EnsureCreatedAsync 会发现表已存在并直接返回。
+            await context.Database.EnsureCreatedAsync(cancellationToken);
 
-        await SeedBusinessDataAsync(context, passwordHasher, adminSession, cancellationToken);
+            await SeedOpenIddictClientsAsync(manager, configuration, cancellationToken);
+
+            await SeedBusinessDataAsync(context, passwordHasher, adminSession, cancellationToken);
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

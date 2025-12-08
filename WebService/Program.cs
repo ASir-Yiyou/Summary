@@ -1,6 +1,8 @@
 using AuthenticationServer.Cache;
 using AuthenticationServer.Extensions;
 using AuthenticationServer.Service;
+using Medallion.Threading;
+using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using OpenIddict.Abstractions;
@@ -31,6 +33,13 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddSingleton<IUrlSignerService, UrlSignerService>();
 
 builder.Services.AddAppDbContext(builder.Configuration);
+
+//2. ×¢²á PostgreSQL ·Ö²¼Ê½Ëø
+builder.Services.AddSingleton<IDistributedLockProvider>(sp => 
+{
+    var connectionString = builder.Configuration.GetSection("AppMultipleDbContextConfiguration:AppDbContext:ConnectionString").Value;
+    return new PostgresDistributedSynchronizationProvider(connectionString);
+});
 
 builder.Services.AddOpenIddictService();
 
