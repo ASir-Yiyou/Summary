@@ -6,6 +6,7 @@ builder.Services.AddReverseProxy()
     .AddServiceDiscoveryDestinationResolver();
 var app = builder.Build();
 app.UseSwagger();
+app.UseGatewayRedLogging();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/auth/swagger/v1/swagger.json", "Auth Service");

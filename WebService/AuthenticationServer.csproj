@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Summary.Common.Core\Summary.Common.Core.csproj" />
     <ProjectReference Include="..\Summary.Common.EFCore\Summary.Common.EFCore.csproj" />
     <ProjectReference Include="..\Summary.Common.Redis\Summary.Common.Redis.csproj" />
   </ItemGroup>

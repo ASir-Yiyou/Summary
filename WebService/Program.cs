@@ -4,8 +4,7 @@ using AuthenticationServer.Service;
 using Medallion.Threading;
 using Medallion.Threading.Postgres;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.RateLimiting;
-using OpenIddict.Abstractions;
+using Summary.Common.Core.Extensions;
 using Summary.Common.EFCore.Extensions;
 using Summary.Common.Redis.Extensions;
 using Summary.Domain.Entities;
@@ -58,6 +57,7 @@ builder.Services.AddRouting(options =>
 var app = builder.Build();
 
 app.UseRouting();
+app.UseServiceRedLogging();
 
 app.UseAuthentication();
 app.UseMiddleware<RedisSessionMiddleware>();

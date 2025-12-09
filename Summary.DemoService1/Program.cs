@@ -25,6 +25,8 @@ builder.Services.AddRouting(options =>
 
 var app = builder.Build();
 
+app.UseServiceRedLogging();
+
 app.UseHttpsRedirection();
 
 // 4. 中间件管道
